@@ -68,9 +68,12 @@ A web-based book management application built with Next.js, TypeScript, and Supa
    ```
 
 4. **Set up Supabase Database**
-   - Create a new Supabase project
-   - Run the database migrations (see Database Schema section)
-   - Configure authentication settings
+   - Create a new Supabase project at [supabase.com](https://supabase.com)
+   - Install Supabase CLI: `npm install --save-dev supabase`
+   - Link your project: `npx supabase link --project-ref YOUR_PROJECT_REF`
+   - Apply migrations: `npx supabase db push`
+   - Seed the database (optional): `npx supabase db reset`
+   - See [supabase/README.md](supabase/README.md) for detailed database setup instructions
 
 5. **Run the development server**
    ```bash
@@ -82,19 +85,32 @@ A web-based book management application built with Next.js, TypeScript, and Supa
 
 ## Database Schema
 
-The application uses the following Supabase tables:
+The application uses a comprehensive Supabase database with the following structure:
 
 ### Core Tables
-- **`profiles`**: User profile information
+- **`profiles`**: User profile information and authentication
 - **`books`**: Book metadata from Google Books API
-- **`bookshelves`**: User's personal book collections
-- **`reviews`**: User ratings and reviews
 - **`authors`**: Author information (future feature)
+- **`genres`**: Book categories and genres
+- **`bookshelves`**: User's personal book collections (want to read, currently reading, read)
+- **`reviews`**: User ratings and reviews
+- **`user_follows`**: User following relationships
 
-### Key Relationships
-- Users can have multiple books in their shelves
-- Books can have multiple reviews from different users
-- Bookshelves track reading status and dates
+### Junction Tables
+- **`books_authors`**: Many-to-many relationship between books and authors
+- **`books_genres`**: Many-to-many relationship between books and genres
+
+### Views
+- **`book_ratings_summary`**: Aggregated book ratings and review counts
+- **`user_reading_summary`**: User reading statistics by shelf type
+
+### Key Features
+- **Row Level Security (RLS)**: All tables have security policies
+- **Automatic timestamps**: Created/updated timestamps with triggers
+- **Foreign key constraints**: Proper referential integrity
+- **Performance indexes**: Optimized for common queries
+
+For detailed database setup instructions, see [supabase/README.md](supabase/README.md).
 
 ## Application Structure
 
